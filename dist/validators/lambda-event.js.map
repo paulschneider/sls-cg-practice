@@ -1,1 +1,0 @@
-{"version":3,"file":"lambda-event.js","sourceRoot":"","sources":["../../src/validators/lambda-event.ts"],"names":[],"mappings":";;;;;;AAAA,8CAA0C;AAC1C,iDAA6C;AAEhC,QAAA,MAAM,GAAG,aAAG,CAAC,MAAM,EAAE;KAC/B,QAAQ,EAAE;KACV,QAAQ,CAAC,EAAE,cAAc,EAAE,mBAAQ,CAAC,WAAW,CAAC,kBAAkB,EAAE,CAAC,CAAA"}

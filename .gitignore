@@ -2,9 +2,10 @@
 node_modules
 jspm_packages
 
-.dist
+dist
 .nyc_output
 .offline.pid
+.vscode
 
 # Serverless directories
 .serverless
