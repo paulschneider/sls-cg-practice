@@ -1,0 +1,10 @@
+# package directories
+node_modules
+jspm_packages
+
+.dist
+.nyc_output
+.offline.pid
+
+# Serverless directories
+.serverless

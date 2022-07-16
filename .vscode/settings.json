@@ -1,0 +1,11 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.format.semicolons": "remove",
+  "tslint.ignoreDefinitionFiles": false
+ }

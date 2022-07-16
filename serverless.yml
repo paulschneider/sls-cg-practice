@@ -1,0 +1,68 @@
+service: coates-test
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: ap-southeast-2
+  environment:
+    USER_TABLE: ${self:service}-userTable-${sls:stage}
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-mocha-plugin
+  - serverless-offline  
+
+functions:
+  createUser:
+    handler: src/functions/users/create.handle
+    events:
+      - http:
+          path: users
+          method: post
+  getUser:
+    handler: src/functions/users/get.handle
+    events:
+      - http:
+          path: users
+          method: get  
+  deleteUser:
+    handler: src/functions/users/delete.handle
+    events:
+      - http:
+          path: users
+          method: delete
+
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-userTable-${sls:stage}
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+custom:
+  serverless-mocha-plugin:
+    preTestCommands: 
+      - bash ./scripts/start-sls-offline.sh
+    postTestCommands:
+      - bash ./scripts/stop-sls-offline.sh
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true

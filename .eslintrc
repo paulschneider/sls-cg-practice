@@ -1,0 +1,45 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "**/*.js"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "import",
+    "@typescript-eslint",
+    "istanbul"
+  ],
+  "parserOptions": {
+    "project": [
+      "tsconfig.json"
+    ]
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/no-internal-modules": [ "error", {
+        "allow": ["aws-sdk/**", "src/**"]
+      }
+    ],
+    "indent": ["error", 2, {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": ["error", "never"],
+    "no-extra-semi": "error",
+    "semi-spacing": ["error", { "before": false, "after": false }],
+    "arrow-parens": ["error", "always"],
+    "eqeqeq": ["error", "always"],
+    "istanbul/no-ignore-file": "error",
+    "istanbul/prefer-ignore-reason": "error",
+    "comma-dangle": ["error", "always-multiline"]
+  }
+}
