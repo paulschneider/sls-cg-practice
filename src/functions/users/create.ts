@@ -2,12 +2,15 @@
 
 import { schema as userCreateSchema, CreateUserValidationError } from "../../validators/create-user"
 import { schema as lambdaEventSchema, LambdaEventValidationError } from "../../validators/lambda-event"
-import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, Context, APIGatewayProxyResultV2 } from "aws-lambda"
-
+import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda"
+import { CreateUserEventData } from "../../schema"
 import { insertDatabaseRecord } from "../../database"
 
-export const handle: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2, context: Context): Promise<APIGatewayProxyResultV2> => {
+const handle = async function (event: CreateUserEventData): Promise<APIGatewayProxyResultV2> {
   const { error: eventError }: { error: LambdaEventValidationError } = lambdaEventSchema.validate(event)
+
+  console.log(event)
+  console.log(eventError)
 
   if (eventError) {
     return {
@@ -32,3 +35,9 @@ export const handle: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEve
     body: "User created!",
   }
 }
+
+const handler: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+  return handle(JSON.parse(event.body) as unknown as CreateUserEventData)
+}
+
+export { handle, handler }

@@ -1,5 +1,6 @@
 export const messages = Object.freeze({
   lambdaEvent: {
+    notAnObject: "No lambda event data supplied in request",
     requiredAttributes: "No lambda event data supplied in request",
   },
   createUser: {

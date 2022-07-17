@@ -10,24 +10,23 @@ provider:
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-mocha-plugin
   - serverless-offline  
 
 functions:
   createUser:
-    handler: src/functions/users/create.handle
+    handler: dist/src/functions/users/create.handler
     events:
       - http:
           path: users
           method: post
   getUser:
-    handler: src/functions/users/get.handle
+    handler: dist/src/functions/users/get.handler
     events:
       - http:
-          path: users
+          path: users/{id}
           method: get  
   deleteUser:
-    handler: src/functions/users/delete.handle
+    handler: dist/src/functions/users/delete.handler
     events:
       - http:
           path: users
@@ -50,11 +49,6 @@ resources:
           WriteCapacityUnits: 1
 
 custom:
-  serverless-mocha-plugin:
-    preTestCommands: 
-      - bash ./scripts/start-sls-offline.sh
-    postTestCommands:
-      - bash ./scripts/stop-sls-offline.sh
   dynamodb:
     stages:
       - dev

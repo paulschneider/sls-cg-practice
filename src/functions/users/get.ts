@@ -1,20 +1,31 @@
 "use strict"
 
 import { schema as lambdaEventSchema, LambdaEventValidationError } from "../../validators/lambda-event"
-import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, Context, APIGatewayProxyResultV2 } from "aws-lambda"
+import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda"
+import { fetchDatabaseRecord } from "../../database"
 
-export const handle: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2, context: Context): Promise<APIGatewayProxyResultV2> => {
-  const { error: eventError }: { error: LambdaEventValidationError } = lambdaEventSchema.validate(event)
+const handle = async function (email: string): Promise<APIGatewayProxyResultV2> {
 
-  if (eventError) {
+  const user = await fetchDatabaseRecord(email)
+
+  if (!user) {
     return {
-      statusCode: 400,
-      body: eventError.details[0].message,
+      statusCode: 404,
+      body: "No user found",
     }
   }
 
-  return Promise.resolve({
+  return {
     statusCode: 200,
-    body: "User located!",
-  })
+    body: JSON.stringify({
+      message: "User fetched!",
+      data: user,
+    }),
+  }
 }
+
+const handler: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
+  return handle(event.pathParameters.email)
+}
+
+export { handle, handler }

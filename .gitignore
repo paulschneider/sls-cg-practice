@@ -6,6 +6,7 @@ dist
 .nyc_output
 .offline.pid
 .vscode
+.dynamodb
 
 # Serverless directories
 .serverless
