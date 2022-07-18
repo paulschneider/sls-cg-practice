@@ -6,7 +6,7 @@ provider:
   stage: dev
   region: ap-southeast-2
   environment:
-    USER_TABLE: ${self:service}-userTable-${sls:stage}
+    USER_TABLE_NAME: ${self:service}-userTable-${sls:stage}
 
 plugins:
   - serverless-dynamodb-local

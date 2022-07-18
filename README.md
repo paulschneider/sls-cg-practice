@@ -1,7 +1,8 @@
-## Over
-Currently implemented is the POST (create) method for the user
+## Overview
+Currently implemented is:
 
-WIP is the GET method to fetch the user
+* the POST (create) method for the user
+* the GET (fetch) method for the user
 
 Not started, DELETE a user
 
@@ -39,7 +40,7 @@ POST http://localhost:3000/dev/users
 
 #### Fetch a user
 ```javascript
-GET http://localhost:3000/dev/users/email@example.com
+GET http://localhost:3000/dev/users/uuid-123
 
 200 "Found!" | 404 "Not Found"
 ```

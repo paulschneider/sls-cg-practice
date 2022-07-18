@@ -9,9 +9,6 @@ import { insertDatabaseRecord } from "../../database"
 const handle = async function (event: CreateUserEventData): Promise<APIGatewayProxyResultV2> {
   const { error: eventError }: { error: LambdaEventValidationError } = lambdaEventSchema.validate(event)
 
-  console.log(event)
-  console.log(eventError)
-
   if (eventError) {
     return {
       statusCode: 400,

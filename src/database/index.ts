@@ -13,7 +13,7 @@ export async function insertDatabaseRecord(data: CreateUserEventData) {
   const insertable: DatabaseUserRecord = { id: uuidv4(), ...data }
 
   const input: PutItemInput = {
-    TableName: "coates-test-userTable-dev",
+    TableName: process.env.USER_TABLE_NAME,
     Item: Converter.marshall(insertable),
   }
 
@@ -22,15 +22,18 @@ export async function insertDatabaseRecord(data: CreateUserEventData) {
   })
 }
 
-export async function fetchDatabaseRecord(email: string): Promise<AttributeMap | void> {
+export async function fetchDatabaseRecord(id: string): Promise<DatabaseUserRecord | void> {
   const input: GetItemInput = {
-    TableName: "coates-test-userTable-dev",
-    Key: Converter.marshall({ email }),
+    TableName: process.env.USER_TABLE_NAME,
+    Key: Converter.marshall({ id }),
+    AttributesToGet: [
+      "name", "email", "dob", "id",
+    ],
   }
 
   return dynamoDb.get(input).promise()
     .then((response: GetItemOutput) => {
-      return response.Item
+      return response as DatabaseUserRecord
     })
     .catch((e) => {
       console.log(e)

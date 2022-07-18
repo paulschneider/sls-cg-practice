@@ -4,9 +4,8 @@ import { schema as lambdaEventSchema, LambdaEventValidationError } from "../../v
 import { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda"
 import { fetchDatabaseRecord } from "../../database"
 
-const handle = async function (email: string): Promise<APIGatewayProxyResultV2> {
-
-  const user = await fetchDatabaseRecord(email)
+const handle = async function (id: string): Promise<APIGatewayProxyResultV2> {
+  const user = await fetchDatabaseRecord(id)
 
   if (!user) {
     return {
@@ -25,7 +24,7 @@ const handle = async function (email: string): Promise<APIGatewayProxyResultV2> 
 }
 
 const handler: APIGatewayProxyHandlerV2 = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
-  return handle(event.pathParameters.email)
+  return handle(event.pathParameters.id)
 }
 
 export { handle, handler }

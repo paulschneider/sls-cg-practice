@@ -22,7 +22,7 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
     "import/no-internal-modules": [ "error", {
-        "allow": ["aws-sdk/**", "src/**"]
+        "allow": ["aws-sdk/**", "src/**", "tests/**"]
       }
     ],
     "indent": ["error", 2, {

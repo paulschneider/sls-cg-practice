@@ -1,19 +1,24 @@
 import { messages } from "../src/errors/messages"
 import { handle as createUser } from "../src/functions/users/create"
 import { CreateUserEventData, ApiResponse } from "../src/schema"
+import { testParameters } from "./data/new-user"
 import { DocumentClient } from "../__mocks__/aws-sdk/clients/dynamodb"
 import { v4 as uuidv4 } from "../__mocks__/uuid"
+import { variables, setEnvironment } from "./setup"
 
 const db = new DocumentClient()
 
-const testParameters: CreateUserEventData = {
-  name: "Paul Schneider",
-  email: "email@example.com",
-  dob: "1980-03-25",
-}
+beforeAll(() => {
+  setEnvironment()
+})
+
+describe("Make sure its all set up", function () {
+  test("Database ENV set correctly", () => {
+    expect(process.env.USER_TABLE_NAME).toEqual(variables.dbName)
+  })
+})
 
 describe("Create user handler", function () {
-
   describe("User created with a fully formed request object", function () {
     it("should return a successful response", async function () {
       const response = await createUser(testParameters) as ApiResponse
@@ -22,11 +27,9 @@ describe("Create user handler", function () {
 
       expect(db.put).toHaveBeenCalledWith(
         expect.objectContaining({
-          "TableName": "coates-test-userTable-dev",
+          "TableName": process.env.USER_TABLE_NAME,
           "Item": {
-            name: testParameters.name,
-            email: testParameters.email,
-            dob: testParameters.dob,
+            ...testParameters,
             id: uuidv4() as string,
           },
         })
@@ -152,5 +155,4 @@ describe("Create user handler", function () {
       expect(response.body).toEqual(messages.createUser.attrs.dob.format)
     })
   })
-
 })
