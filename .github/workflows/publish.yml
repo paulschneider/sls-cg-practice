@@ -1,0 +1,27 @@
+name: Publish to GH
+
+on: [push, pull_request]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install packages
+        id: package-install
+        run: npm install
+
+      - name: Run tests
+        id: run-tests
+        run: npm run test
+      
+      - name: Upload coverage report
+        id: upload-report
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${{ secrets.CODE_COV_TOKEN }}
+ 
