@@ -3,10 +3,12 @@ Currently implemented is:
 
 * the POST (create) method for the user
 * the GET (fetch) method for the user
+* the DELETE (remove) method for the user
+## TO DO
 
-Not started, DELETE a user
+* .....
 
-##Usage
+## Usage
 
 Steps to run this all locally. No deployments or remote calls needed:
 

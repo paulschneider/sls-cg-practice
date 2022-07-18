@@ -1,8 +1,8 @@
 import { messages } from "../src/errors/messages"
 import { handle as createUser } from "../src/functions/users/create"
-import { CreateUserEventData, ApiResponse } from "../src/schema"
+import { CreateUserEventData, ApiResponse, HttpErrorResponse } from "../src/schema"
 import { testParameters } from "./data/new-user"
-import { DocumentClient } from "../__mocks__/aws-sdk/clients/dynamodb"
+import { DocumentClient, setDbQueryUserPutResponse } from "../__mocks__/aws-sdk/clients/dynamodb"
 import { v4 as uuidv4 } from "../__mocks__/uuid"
 import { variables, setEnvironment } from "./setup"
 
@@ -153,6 +153,27 @@ describe("Create user handler", function () {
 
       expect(response.statusCode).toEqual(400)
       expect(response.body).toEqual(messages.createUser.attrs.dob.format)
+    })
+  })
+
+  describe("POST Handles an error when the database is not available", function () {
+    it("should return a service unavailable error", async function () {
+      setDbQueryUserPutResponse(503)
+
+      const response = await createUser(testParameters) as HttpErrorResponse
+
+      expect(db.put).toHaveBeenCalledWith(
+        expect.objectContaining({
+          "TableName": process.env.USER_TABLE_NAME,
+          "Item": {
+            ...testParameters,
+            id: uuidv4() as string,
+          },
+        })
+      )
+
+      expect(response.status).toEqual(503)
+      expect(response.message).toEqual("Service unavailable")
     })
   })
 })

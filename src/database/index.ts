@@ -1,4 +1,4 @@
-import { DocumentClient, Converter, PutItemInput, GetItemInput, GetItemOutput, AttributeMap } from "aws-sdk/clients/dynamodb"
+import { DocumentClient, Converter, PutItemInput, GetItemInput, GetItemOutput, DeleteItemInput, DeleteItemOutput } from "aws-sdk/clients/dynamodb"
 import { v4 as uuidv4 } from "uuid"
 import { CreateUserEventData, DatabaseUserRecord } from "../schema/create-user"
 
@@ -17,9 +17,7 @@ export async function insertDatabaseRecord(data: CreateUserEventData) {
     Item: Converter.marshall(insertable),
   }
 
-  return dynamoDb.put(input).promise().catch((e) => {
-    console.log(e)
-  })
+  return dynamoDb.put(input).promise()
 }
 
 export async function fetchDatabaseRecord(id: string): Promise<DatabaseUserRecord | void> {
@@ -32,10 +30,15 @@ export async function fetchDatabaseRecord(id: string): Promise<DatabaseUserRecor
   }
 
   return dynamoDb.get(input).promise()
-    .then((response: GetItemOutput) => {
-      return response as DatabaseUserRecord
-    })
-    .catch((e) => {
-      console.log(e)
-    })
+    .then((response: GetItemOutput) => response as DatabaseUserRecord)
 }
+
+export async function deleteDatabaseRecord(id: string): Promise<DeleteItemOutput | void> {
+  const input: DeleteItemInput = {
+    TableName: process.env.USER_TABLE_NAME,
+    Key: Converter.marshall({ id }),
+  }
+
+  return dynamoDb.delete(input).promise()
+}
+
