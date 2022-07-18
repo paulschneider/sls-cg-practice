@@ -8,7 +8,7 @@ Currently implemented is:
 * the DELETE (remove) method for the user
 ## TO DO
 
-* .....
+* Test with AWS deployment
 
 ## Usage
 
