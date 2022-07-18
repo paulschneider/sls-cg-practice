@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/paulschneider/sls-cg-practice/branch/master/graph/badge.svg?token=66WLE75V5I)](https://codecov.io/gh/paulschneider/sls-cg-practice)
+
 ## Overview
 Currently implemented is:
 
